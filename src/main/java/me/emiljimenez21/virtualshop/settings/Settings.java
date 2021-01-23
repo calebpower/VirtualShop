@@ -16,6 +16,8 @@ public class Settings extends SimpleSettings {
     public static String databasePrefix;
     public static Boolean reporting;
     public static String serverUUID;
+    public static Boolean broadcastSales;
+    public static Double tax;
 
     @Override
     protected int getConfigVersion() {
@@ -29,6 +31,9 @@ public class Settings extends SimpleSettings {
 
         reporting = getBoolean("report_errors_to_dev");
         serverUUID = getOrSetDefault("server_uuid", UUID.randomUUID().toString());
+
+        broadcastSales = getBoolean("broadcast_sales");
+        tax = getDouble("tax");
 
         pathPrefix("mysql");
         databaseEnabled = getBoolean("enabled");

@@ -24,7 +24,8 @@ public abstract class ShopCommand extends SimpleCommand {
     protected void onCommand() {
         user = PlayerManager.getPlayer(getPlayer().getUniqueId().toString());
         if(!hasPerm("virtualshop.admin")) {
-            setCooldown(3, TimeUnit.SECONDS);
+            // reduced cooldown from 3 seconds to 1 second
+            setCooldown(1, TimeUnit.SECONDS);
         }
     }
 

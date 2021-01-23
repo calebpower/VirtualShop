@@ -1,7 +1,7 @@
 Version: 6
 messages:
   help:
-    buy: "/buy <item> <amount> [price]"
+    buy: "/buy <amount> <item> [price]"
     sell: "/sell <amount> <item> <price>"
     stock: "/stock <player> [page]"
     sales: "/sales <player> [page]"
@@ -15,6 +15,7 @@ messages:
     self-no-sales: "You haven't made any sales"
   stock:
     broadcast: "{seller} listed {amount} {item} for {price} each"
+    personal: "You listed {amount} {item} for {price} each, paying {tax} in tax"
     listing: "{seller}: {amount} {item} for {price}"
     cancelled: "You removed {amount} {item} from the shop"
     removed: "Removed {amount} {item}"

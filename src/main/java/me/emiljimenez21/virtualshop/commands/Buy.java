@@ -25,13 +25,13 @@ public class Buy extends ShopCommand {
         List<String> response = new ArrayList<>();
 
         if(args.length == 1) {
-            response.addAll(Virtualshop.getItems().listNames());
-            response.add("held");
-            response.add("hand");
+            response.add("<amount>");
         }
 
         if(args.length == 2) {
-            response.add("<amount>");
+            response.addAll(Virtualshop.getItems().listNames());
+            response.add("held");
+            response.add("hand");
         }
 
         if(args.length == 3) {
@@ -49,15 +49,15 @@ public class Buy extends ShopCommand {
         if(args.length < 2 || args.length > 3) {
             user.playErrorSound();
             Common.tell(sender, Messages.BASE_COLOR + "Command Usage: " + Messages.HELP_BUY
-                    .replace("<item>", Messages.formatItem("<item>"))
                     .replace("<amount>", Messages.formatAmount("<amount>"))
+                    .replace("<item>", Messages.formatItem("<item>"))
                     .replace("[price]", Messages.formatPrice("[price]"))
             );
             return;
         }
 
         // Die if can't load the item or the amount
-        if(!loadItem(0) || !loadAmount(1)){
+        if(!loadAmount(0) || !loadItem(1)){
             return;
         }
 

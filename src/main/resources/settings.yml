@@ -3,6 +3,9 @@ Locale: "en"
 prefix: "&8(&9&lShop&8) "
 sound: true # Enabling this features plays sounds when a player uses the shop
 report_errors_to_dev: true # Enabling this feature will report errors to the developer
+broadcast_sales: true # (ekj) Enabling this feature will broadcast vshop sales to the entire server
+tax: 0 # (ekj) This is the percent at which the sale price is taxed.
+# The tax should be expressed as an integer from 0 to 100. For example, 5 is a 5% tax on the total value of the goods sold.
 mysql:
   enabled: false
   host: "localhost"

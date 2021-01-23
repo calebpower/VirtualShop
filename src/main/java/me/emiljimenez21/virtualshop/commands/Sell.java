@@ -4,6 +4,7 @@ import me.emiljimenez21.virtualshop.Virtualshop;
 import me.emiljimenez21.virtualshop.objects.ShopItem;
 import me.emiljimenez21.virtualshop.objects.Stock;
 import me.emiljimenez21.virtualshop.settings.Messages;
+import me.emiljimenez21.virtualshop.settings.Settings;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.mineacademy.fo.ChatUtil;
@@ -58,6 +59,7 @@ public class Sell extends ShopCommand {
             return;
         }
 
+        // will use this code in /find to implement hand as an argument (/find hand)
         if(args[1].equalsIgnoreCase("hand") || args[1].equalsIgnoreCase("held")){
             ItemStack hand = getPlayer().getInventory().getItemInMainHand();
             item = new ShopItem(Virtualshop.getItems().get(hand));
@@ -120,30 +122,66 @@ public class Sell extends ShopCommand {
                 price
         );
 
+        // tax system
+        // Check to see if the user can afford tax
+        double tax = (Settings.tax / 100) * (amount * price);
+        boolean taxable = false;
+        if(HookManager.getBalance(getPlayer()) < tax) {
+            user.playErrorSound();
+            Messages.send(sender, Messages.ERROR_NO_FUNDS);
+            return;
+        } else {
+            taxable = true;
+        }
+
+        // after this point it is determined that user has items. need to check before for offhand/armor dupe issue
+
         Stock dbStock = Virtualshop.getDatabase().createStock(stock);
 
-        if(dbStock != null){
+        if(dbStock != null && taxable){
             user.playPostedListing();
             user.inventory.removeItem(item.getItem());
+            Virtualshop.getEconomy().withdrawPlayer(getPlayer(), tax);
 
-            Messages.broadcast(Messages.STOCK_BROADCAST
-                    .replace(
-                            "{seller}",
-                            Messages.formatPlayer(getPlayer())
-                    )
-                    .replace(
-                            "{amount}",
-                            Messages.formatAmount(dbStock.quantity)
-                    )
-                    .replace(
-                            "{item}",
-                            Messages.formatItem(item.getName())
-                    )
-                    .replace(
-                            "{price}",
-                            Messages.formatPrice(dbStock.price)
-                    )
-            );
+            if (Settings.broadcastSales) {
+                Messages.broadcast(Messages.STOCK_BROADCAST
+                        .replace(
+                                "{seller}",
+                                Messages.formatPlayer(getPlayer())
+                        )
+                        .replace(
+                                "{amount}",
+                                Messages.formatAmount(dbStock.quantity)
+                        )
+                        .replace(
+                                "{item}",
+                                Messages.formatItem(item.getName())
+                        )
+                        .replace(
+                                "{price}",
+                                Messages.formatPrice(dbStock.price)
+                        )
+                );
+            } else {
+                Messages.broadcast(Messages.STOCK_PERSONAL
+                        .replace(
+                                "{amount}",
+                                Messages.formatAmount(dbStock.quantity)
+                        )
+                        .replace(
+                                "{item}",
+                                Messages.formatItem(item.getName())
+                        )
+                        .replace(
+                                "{price}",
+                                Messages.formatPrice(dbStock.price)
+                        )
+                        .replace(
+                                "{tax}",
+                                Messages.formatPrice(tax)
+                        )
+                );
+            }
         }
     }
 }

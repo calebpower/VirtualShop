@@ -1,6 +1,7 @@
 package me.emiljimenez21.virtualshop.commands;
 
 import me.emiljimenez21.virtualshop.Virtualshop;
+import me.emiljimenez21.virtualshop.objects.ShopItem;
 import me.emiljimenez21.virtualshop.objects.Stock;
 import me.emiljimenez21.virtualshop.settings.Messages;
 import org.bukkit.ChatColor;
@@ -56,6 +57,12 @@ public class Find extends ShopCommand {
             if(!loadPage(1)){
                 return;
             }
+        }
+
+        // adding hand as an argument to /find
+        if(args[1].equalsIgnoreCase("hand") || args[1].equalsIgnoreCase("held")) {
+            ItemStack hand = getPlayer().getInventory().getItemInMainHand();
+            item = new ShopItem(Virtualshop.getItems().get(hand));
         }
 
         List<Stock> stocks = Virtualshop.getDatabase().retrieveItemStock(item.getName());

@@ -4,6 +4,8 @@ import me.emiljimenez21.virtualshop.Virtualshop;
 import me.emiljimenez21.virtualshop.objects.Stock;
 import me.emiljimenez21.virtualshop.settings.Messages;
 import org.mineacademy.fo.Common;
+import org.mineacademy.fo.model.HookManager;
+
 
 import java.util.ArrayList;
 import java.util.List;
